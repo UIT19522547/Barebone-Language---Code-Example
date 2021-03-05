@@ -1,0 +1,100 @@
+#So sánh X<=Y: Nếu X<=Y thì KQ=0, X>Y thì KQ=1
+clear KQ; clear T; clear M; clear N; clear KQX; clear KQY;clear DCKQ;#DCKQ=đã có kq
+#Tóm tắt:
+#Cho vòng lặp while giảm cả X và Y cùng 1 lúc, cái nào bằng 0 trước thì cái đó bé hơn
+
+
+#First we need to copy X1=X and Y1=Y
+clear X1; clear Y1;
+while X not 0 do
+  decr X;
+  incr X1
+  incr N;
+end;
+while N not 0 do
+  incr X;
+  decr N;
+end;
+while Y not 0 do
+  incr Y1;
+  decr Y;
+  incr M;
+end;
+while M not 0 do
+  incr Y;
+  decr M;
+end;
+
+incr T;
+incr DCKQ;
+while T not 0 do
+    incr N;
+    incr M;
+    clear X2;
+    while X1 not 0 do #kiểm tra xem X1 có=0 hay không rồi gán X1 qua X2 sau đó gán X2 trở lại X1 cho vòng lặp sau
+        decr N;
+        while X1 not 0 do
+            decr X1;
+            incr X2;
+        end;
+    end;
+    #gán trở lại X2 về X1
+    while X2 not 0 do
+        incr X1;
+        decr X2;
+    end;
+
+    while N not 0 do #Tức X1==0 => kiểm tra xem Y1 có ==0 hay không nếu có => X1==Y1
+        decr T; #Ngừng vòng lặp
+        clear Y2;
+        while Y1 not 0 do #Tương tự khi so sánh phải cho Y1=0 để thoát khỏi vòng lặp sau đó lấy lại sau
+            incr KQY; #Y1>X1 => KQY=1,KQX=0
+            decr M;
+            decr DCKQ; #Đánh dấu đã có kq
+            while Y1 not 0 do
+                incr Y2;
+                decr Y1;
+            end;
+        end;
+        #Gán lại Y1
+        while Y2 not 0 do
+            incr Y1;
+            decr Y2;
+        end;
+
+        while M not 0 do #If(Y1==0)
+            decr DCKQ; #Đánh dấu đã có kết quả để không phải so sánh tiếp Y1, có=0
+        end;
+    end;
+
+    #Nếu X1 vẫn khác 0 thì tiếp tục so sánh xem Y1
+    while DCKQ not 0 do
+        clear Y2;
+        while Y1 not 0 do
+            decr M; #Nếu Y1 khác 0 thì cho M=0 để k cần xử lý Y1=0
+            #Cho Y1=0 để thoát khỏi vòng lặp r sau đó lấy lại value của nó
+            while Y1 not 0 do
+                incr Y2;
+                decr Y1;
+            end;
+        end;
+        #Lấy lại giá trị Y1
+        while Y2 not 0 do
+            incr Y1;
+            decr Y2;
+        end;
+
+        #Nếu Y1==0, Vì trường hợp X1=0 đã xét ở trên, nên phần này chỉ xét X1 khác 0 => Y1<X1
+        while M not 0 do
+            incr KQ;
+            incr KQX;
+            decr M; #M=0 để kết thúc vòng lặp
+        end;
+
+        #Nếu X1 khác 0 và cả Y1 khác 0 thì tiếp tục giảm cả 2
+        decr X1;
+        decr X2;
+
+    end;
+    #KQX, KQY cần dùng khi muốn so sánh tách riêng 3 trường hợp X1>Y1, X1<Y1 hay X1==Y1
+end;

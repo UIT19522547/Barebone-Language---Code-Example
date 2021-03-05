@@ -1,0 +1,104 @@
+#Compare X<=Y: if X<=Y: KQ=0 else: KQ=1
+#If you want to compare 3 case(X<Y: KQX=0,KQY=1 || X>Y: KQX=1,KQY=0 || X==Y: KQX=KQY=0)
+clear KQ; clear T; clear M; clear N; clear KQX; clear KQY;
+clear DCKQ; #DCKQ=1: X1=0 so we don't need to check Y1=0 (when X1=0 we already have checked Y1=0)
+
+#SUMMARY: Reduce X and Y at the same time, whichever is zero before the other is less than
+
+
+#First we need to copy X1=X and Y1=Y
+clear X1; clear Y1;
+while X not 0 do
+  decr X;
+  incr X1
+  incr N;
+end;
+while N not 0 do
+  incr X;
+  decr N;
+end;
+while Y not 0 do
+  incr Y1;
+  decr Y;
+  incr M;
+end;
+while M not 0 do
+  incr Y;
+  decr M;
+end;
+
+incr T; #T=1 (when T=0 => Stop the loop while)
+incr DCKQ;
+while T not 0 do
+    incr N;
+    incr M;
+    clear X2;
+    #if(X1!=0): continue
+    while X1 not 0 do
+        decr N;
+        while X1 not 0 do
+            decr X1;
+            incr X2;
+        end;
+    end;
+    #X1=X2
+    while X2 not 0 do
+        incr X1;
+        decr X2;
+    end;
+
+    elif(X1==0)
+    while N not 0 do
+        decr T; #T=T-1=0 => stop the loop
+        clear Y2;
+        while Y1 not 0 do
+            incr KQY; #Y1>X1 => KQY=1,KQX=0
+            decr M;
+            decr DCKQ;
+            while Y1 not 0 do
+                incr Y2;
+                decr Y1;
+            end;
+        end;
+        #Gán lại Y1
+        while Y2 not 0 do
+            incr Y1;
+            decr Y2;
+        end;
+
+        while M not 0 do #If(Y1==0)
+            decr DCKQ;
+        end;
+    end;
+
+    #If(X1!=0)
+    while DCKQ not 0 do
+        clear Y2;
+        if(Y1!=0): continue
+        while Y1 not 0 do
+            decr M;
+            #Y2=Y1. Do this to stop the loop while
+            while Y1 not 0 do
+                incr Y2;
+                decr Y1;
+            end;
+        end;
+        #Y1=Y2
+        while Y2 not 0 do
+            incr Y1;
+            decr Y2;
+        end;
+
+        #Nếu Y1==0 => Y1<X1
+        while M not 0 do
+            incr KQ;
+            incr KQX;
+            decr M; #M=0 để kết thúc vòng lặp
+        end;
+
+        #if(X1!=0, X2!=0)
+        decr X1;
+        decr X2;
+
+    end;
+end;
